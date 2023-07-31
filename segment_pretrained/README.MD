@@ -11,3 +11,7 @@ yolov5n-seg.pt
 yolov5s-seg.pt
 
 yolov5x-seg.pt
+
+You get them from here:
+
+https://github.com/ultralytics/yolov5/releases/
