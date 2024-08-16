@@ -1,0 +1,100 @@
+{
+    // Define parameters
+    // ========================================================
+    // Unit abbreviations:
+    //   dva: degrees of visual angle
+    //   pix: pixels
+    "verbose": true,
+
+    // display: Defines geometry of target display
+    // ========================================================
+    // The encoded image will be scaled such that it optimally uses
+    // the max space available. If the orignal image has a different aspect
+    // ratio than the display region, it will only use one spatial
+    // dimension (horizontal or vertical) to its full extent
+    //
+    // If one dva corresponds to different pix_per_dva on the display,
+    // (i.e. varying distance observers from screen), it should be set
+    // larger than the largest pix_per_dva required, for avoiding
+    // extrapolation artefacts or blur.
+    //
+    "display": {
+        "size_max_x_dva": 10.0,  // maximum x size of encoded image
+        "size_max_y_dva": 10.0,  // minimum y size of encoded image
+        "pix_per_dva": 40.0,  // scaling factor pixels to dva
+        "scale": "same_range"  // "same_luminance" or "same_range"
+    },
+
+    // gabor: Defines paras of Gabor filters for contour extraction
+    // ==============================================================
+    "gabor": {
+        "sigma_kernel_dva": 0.06,
+        "lambda_kernel_dva": 0.12,
+        "n_orientations": 8
+    },
+
+    // encoding: Defines parameters of sparse encoding process
+    // ========================================================
+    // Roughly speaking, after contour extraction dictionary elements
+    // will be placed starting from the position with the highest
+    // overlap with the contour. Elements placed can be surrounded
+    // by a dead or inhibitory zone to prevent placing further elements
+    // too closely. The procedure will map 'n_patches_compute' elements
+    // and then stop. For each element one obtains an overlap with the
+    // contour image.
+    //
+    // After placement, the overlaps found are normalized to the max
+    // overlap found, and then all elements with a larger normalized overlap
+    // than 'overlap_threshold' will be selected. These remaining
+    // elements will comprise a 'full' encoding of the contour.
+    //
+    // To generate even sparser representations, the full encoding can
+    // be reduced to a certain percentage of elements in the full encoding
+    // by setting the variable 'percentages'
+    //
+    // Example: n_patches_compute: 100 reduced by overlap_threshold: 0.1
+    // to 80 elements. Requesting a percentage of 30% yields representation
+    // with 24 elements.
+    //
+    "encoding": {
+        "n_patches_compute": 100,  // this amount of patches will be placed
+        "use_exp_deadzone": true,  // parameters of Gaussian deadzone
+        "size_exp_deadzone_dva": 1.20,  // PREVIOUSLY 1.4283
+        "use_cutout_deadzone": true,  // parameters of cutout deadzone
+        "size_cutout_deadzone_dva": 0.65,  // PREVIOUSLY 0.7575
+        "overlap_threshold": 0.1,  // relative overlap threshold
+        "percentages": 100
+    },
+
+    "number_of_patches": 100, // TODO: Repeated from encoding
+
+    // dictionary: Defines parameters of dictionary
+    // ========================================================
+    "dictionary": {
+        "size_dva": 1.0,  // PREVIOUSLY 1.25,
+        "clocks": {
+            "n_dir": 8,  // number of directions for clock pointer segments
+            "n_open": 4,  // number of opening angles between two clock pointer segments
+            "pointer_width": 0.07,  // PREVIOUSLY 0.05,  // relative width and size of tip extension of clock pointer
+            "pointer_length": 0.18  // PREVIOUSLY 0.15,  // relative length of clock pointer
+        },
+        "phosphene": {
+            "sigma_width": 0.18  // DEFAULT 0.15,  // half-width of Gaussian
+        }
+    },
+
+
+    // control: For controlling plotting options and flow of script
+    // ========================================================
+    "control": {
+        "force_torch_use_cpu": false,  // force using CPU even if GPU available
+        // "show_capture": true,  // shows captured image
+        // "show_object": true,  // shows detected object
+        "show_mode": "cv2", // "pyplot" or "cv2"
+        "show_image": true, // shows input image
+        "show_contours": true,  // shows extracted contours
+        "show_percept": true  // shows percept
+}
+
+
+}
